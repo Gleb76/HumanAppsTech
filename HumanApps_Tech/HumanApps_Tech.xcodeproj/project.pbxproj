@@ -16,6 +16,7 @@
 		77F12F6D2C6A88D5001B6B3A /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F12F6C2C6A88D5001B6B3A /* PhotoViewModel.swift */; };
 		77F12F712C6A8BB6001B6B3A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F12F702C6A8BB6001B6B3A /* AppDelegate.swift */; };
 		77F12F732C6A8C6C001B6B3A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F12F722C6A8C6C001B6B3A /* SettingsViewController.swift */; };
+		77F12F762C6A8FFF001B6B3A /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F12F752C6A8FFF001B6B3A /* MainTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		77F12F6C2C6A88D5001B6B3A /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		77F12F702C6A8BB6001B6B3A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		77F12F722C6A8C6C001B6B3A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		77F12F752C6A8FFF001B6B3A /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 		77F12F632C6A8735001B6B3A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				77F12F742C6A8FEA001B6B3A /* TabBarController */,
 				77F12F532C6A8727001B6B3A /* ViewController.swift */,
 				77F12F722C6A8C6C001B6B3A /* SettingsViewController.swift */,
 			);
@@ -114,6 +117,14 @@
 				77F12F582C6A8728001B6B3A /* Assets.xcassets */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		77F12F742C6A8FEA001B6B3A /* TabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				77F12F752C6A8FFF001B6B3A /* MainTabBarController.swift */,
+			);
+			name = TabBarController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -188,6 +199,7 @@
 			files = (
 				77F12F732C6A8C6C001B6B3A /* SettingsViewController.swift in Sources */,
 				77F12F712C6A8BB6001B6B3A /* AppDelegate.swift in Sources */,
+				77F12F762C6A8FFF001B6B3A /* MainTabBarController.swift in Sources */,
 				77F12F542C6A8727001B6B3A /* ViewController.swift in Sources */,
 				77F12F6D2C6A88D5001B6B3A /* PhotoViewModel.swift in Sources */,
 				77F12F692C6A883C001B6B3A /* Service.swift in Sources */,
