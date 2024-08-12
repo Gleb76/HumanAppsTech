@@ -23,7 +23,7 @@ class MainTabBarController: UITabBarController {
     private func generateTabBar() {
         viewControllers = [
             generateVC(
-                viewController: ViewController(),
+                viewController: MainViewController(),
                 title: "Home",
                 image: UIImage(systemName: "scribble.variable")),
             generateVC(
