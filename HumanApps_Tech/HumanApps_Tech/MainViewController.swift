@@ -158,20 +158,45 @@ class MainViewController: UIViewController {
     }
     
     @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
-        guard recognizer.state == .changed || recognizer.state == .ended else { return }
+        guard let view = recognizer.view else { return }
         
         let translation = recognizer.translation(in: view)
         recognizer.setTranslation(.zero, in: view)
-        imageView.center = CGPoint(x: imageView.center.x + translation.x, y: imageView.center.y + translation.y)
+        
+        let newCenterX = view.center.x + translation.x
+        let newCenterY = view.center.y + translation.y
+        
+        let minX = view.bounds.width / 2
+        let maxX = self.view.bounds.width - minX
+        let minY = view.bounds.height / 2
+        let maxY = self.view.bounds.height - minY
+        
+        view.center = CGPoint(x: min(max(newCenterX, minX), maxX),
+                              y: min(max(newCenterY, minY), maxY))
     }
+
     
     @objc private func handlePinch(_ recognizer: UIPinchGestureRecognizer) {
-        guard recognizer.state == .changed || recognizer.state == .ended else { return }
-  
-        imageView.transform = imageView.transform.scaledBy(x: recognizer.scale, y: recognizer.scale)
-        recognizer.scale = 1
+        guard let view = recognizer.view else { return }
+        
+        let transform = view.transform
+        let scale = recognizer.scale
+        let minScale: CGFloat = 1.0
+        let maxScale: CGFloat = 4.0
+
+        let newScale = scale * sqrt(transform.a * transform.a + transform.c * transform.c)
+
+        if newScale > maxScale {
+            view.transform = transform.scaledBy(x: maxScale / newScale, y: maxScale / newScale)
+        } else if newScale < minScale {
+            view.transform = transform.scaledBy(x: minScale / newScale, y: minScale / newScale)
+        } else {
+            view.transform = transform.scaledBy(x: scale, y: scale)
+        }
+
+        recognizer.scale = 1.0
     }
-    
+
     @objc private func filterChanged() {
         updateImageView()
     }
