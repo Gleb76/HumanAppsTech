@@ -21,6 +21,30 @@ class MainViewController: UIViewController {
         return imageView
     }()
     
+    private let filterSegmentedControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["Original", "B&W"])
+        control.selectedSegmentIndex = 0
+        control.translatesAutoresizingMaskIntoConstraints = false
+        return control
+    }()
+    
+    private let addButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("+", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 50)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let saveButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Save", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    
     private let viewModel = MainViewModel()
     private var cancellables: Set<AnyCancellable> = []
     
@@ -41,16 +65,13 @@ class MainViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
-        setupAddButton()
         setupImageView()
+        setupFilterSegmentedControl()
+        setupAddButton()
+        setupSaveButton()
     }
     
     private func setupAddButton() {
-        let addButton = UIButton(type: .system)
-        addButton.setTitle("+", for: .normal)
-        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 50)
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        
         view.addSubview(addButton)
         
         NSLayoutConstraint.activate([
@@ -66,29 +87,55 @@ class MainViewController: UIViewController {
     private func setupImageView() {
         view.addSubview(imageView)
         
-        // Начальные ограничения (чтобы imageView изначально не занимал место)
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 0),
-            imageView.heightAnchor.constraint(equalToConstant: 0)
+            imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor)
         ])
     }
+    
+    private func setupFilterSegmentedControl() {
+        view.addSubview(filterSegmentedControl)
+        
+        NSLayoutConstraint.activate([
+            filterSegmentedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            filterSegmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+        
+        filterSegmentedControl.addTarget(self, action: #selector(filterChanged), for: .valueChanged)
+    }
+    
+    private func setupSaveButton() {
+        view.addSubview(saveButton)
+        
+        NSLayoutConstraint.activate([
+            saveButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            saveButton.widthAnchor.constraint(equalToConstant: 60),
+            saveButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        
+        saveButton.addTarget(self, action: #selector(saveImageToGallery), for: .touchUpInside)
+    }
+
     
     private func bindViewModel() {
         viewModel.$currentPhoto
             .receive(on: RunLoop.main)
             .sink { [weak self] image in
-                guard let self = self, let image = image else { return }
-                self.updateImageView(with: image)
+                guard let self = self else { return }
+                self.updateImageView()
             }
             .store(in: &cancellables)
     }
     
-    private func updateImageView(with image: UIImage) {
-        imageView.image = image
+    private func updateImageView() {
+        guard let originalImage = viewModel.currentPhoto else { return }
+        let filteredImage = applyFilter(to: originalImage)
+        imageView.image = filteredImage
         
-        let imageAspectRatio = image.size.width / image.size.height
+        let imageAspectRatio = filteredImage.size.width / filteredImage.size.height
         
         NSLayoutConstraint.deactivate(imageView.constraints)
         
@@ -98,6 +145,23 @@ class MainViewController: UIViewController {
             imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1 / imageAspectRatio)
         ])
+    }
+    
+    private func applyFilter(to image: UIImage) -> UIImage {
+        guard filterSegmentedControl.selectedSegmentIndex == 1 else {
+            return image
+        }
+        
+        let context = CIContext(options: nil)
+        if let currentFilter = CIFilter(name: "CIPhotoEffectMono") {
+            let beginImage = CIImage(image: image)
+            currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+            if let output = currentFilter.outputImage, let cgimg = context.createCGImage(output, from: output.extent) {
+                return UIImage(cgImage: cgimg)
+            }
+        }
+        
+        return image
     }
     
     private func setupGestures() {
@@ -134,6 +198,31 @@ class MainViewController: UIViewController {
         imageView.transform = imageView.transform.scaledBy(x: recognizer.scale, y: recognizer.scale)
         recognizer.scale = 1
     }
+    
+    @objc private func filterChanged() {
+        updateImageView()
+    }
+    @objc private func saveImageToGallery() {
+        guard let imageToSave = imageView.image else {
+            
+            return
+        }
+        
+        UIImageWriteToSavedPhotosAlbum(imageToSave, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let alert = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Saved!", message: "Your image has been saved to your photos.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+    }
+
 }
 
 // MARK: - UIImagePickerControllerDelegate & UINavigationControllerDelegate
