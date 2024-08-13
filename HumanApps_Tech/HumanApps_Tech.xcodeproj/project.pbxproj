@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		77F12F522C6A8727001B6B3A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F12F512C6A8727001B6B3A /* SceneDelegate.swift */; };
-		77F12F542C6A8727001B6B3A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F12F532C6A8727001B6B3A /* ViewController.swift */; };
+		77F12F542C6A8727001B6B3A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F12F532C6A8727001B6B3A /* MainViewController.swift */; };
 		77F12F592C6A8728001B6B3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77F12F582C6A8728001B6B3A /* Assets.xcassets */; };
 		77F12F5C2C6A8728001B6B3A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 77F12F5A2C6A8728001B6B3A /* LaunchScreen.storyboard */; };
 		77F12F692C6A883C001B6B3A /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F12F682C6A883C001B6B3A /* Service.swift */; };
@@ -22,7 +22,7 @@
 /* Begin PBXFileReference section */
 		77F12F4C2C6A8727001B6B3A /* HumanApps_Tech.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HumanApps_Tech.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77F12F512C6A8727001B6B3A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		77F12F532C6A8727001B6B3A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		77F12F532C6A8727001B6B3A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		77F12F582C6A8728001B6B3A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		77F12F5B2C6A8728001B6B3A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		77F12F5D2C6A8728001B6B3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -65,7 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				77F12F672C6A8791001B6B3A /* Resources */,
-				77F12F662C6A8784001B6B3A /* Services */,
+				77F12F662C6A8784001B6B3A /* Extensions */,
 				77F12F652C6A873A001B6B3A /* Models */,
 				77F12F642C6A8738001B6B3A /* ViewModels */,
 				77F12F632C6A8735001B6B3A /* Views */,
@@ -79,7 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				77F12F742C6A8FEA001B6B3A /* TabBarController */,
-				77F12F532C6A8727001B6B3A /* ViewController.swift */,
+				77F12F532C6A8727001B6B3A /* MainViewController.swift */,
 				77F12F722C6A8C6C001B6B3A /* SettingsViewController.swift */,
 			);
 			name = Views;
@@ -101,12 +101,12 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		77F12F662C6A8784001B6B3A /* Services */ = {
+		77F12F662C6A8784001B6B3A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				77F12F682C6A883C001B6B3A /* Service.swift */,
 			);
-			name = Services;
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		77F12F672C6A8791001B6B3A /* Resources */ = {
@@ -200,7 +200,7 @@
 				77F12F732C6A8C6C001B6B3A /* SettingsViewController.swift in Sources */,
 				77F12F712C6A8BB6001B6B3A /* AppDelegate.swift in Sources */,
 				77F12F762C6A8FFF001B6B3A /* MainTabBarController.swift in Sources */,
-				77F12F542C6A8727001B6B3A /* ViewController.swift in Sources */,
+				77F12F542C6A8727001B6B3A /* MainViewController.swift in Sources */,
 				77F12F6D2C6A88D5001B6B3A /* PhotoViewModel.swift in Sources */,
 				77F12F692C6A883C001B6B3A /* Service.swift in Sources */,
 				77F12F6B2C6A8898001B6B3A /* PhotoModel.swift in Sources */,
@@ -351,7 +351,8 @@
 				DEVELOPMENT_TEAM = 2A3746WANH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HumanApps_Tech/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Privacy for using PhotoCamera";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Privacy for using Photo Galary";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -378,7 +379,8 @@
 				DEVELOPMENT_TEAM = 2A3746WANH;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HumanApps_Tech/Info.plist;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Privacy for using PhotoCamera";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Privacy for using Photo Galary";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
