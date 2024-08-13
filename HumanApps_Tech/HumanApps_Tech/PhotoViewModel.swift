@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-class MainViewModel: ObservableObject {
+class PhotoViewModel: ObservableObject {
     @Published var currentPhoto: UIImage? = nil
 
     private var photos: [PhotoModel] = []
