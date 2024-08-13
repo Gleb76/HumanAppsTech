@@ -12,40 +12,12 @@ class MainViewController: UIViewController {
 
     // MARK: - Properties
     
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.yellow.cgColor
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    private let filterSegmentedControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["Original", "B&W"])
-        control.selectedSegmentIndex = 0
-        control.translatesAutoresizingMaskIntoConstraints = false
-        return control
-    }()
-    
-    private let addButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("+", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 50)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private let saveButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Save", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let imageView: UIImageView = UIComponentFactory.createImageView()
+    private let filterSegmentedControl: UISegmentedControl = UIComponentFactory.createSegmentedControl(items: ["Original", "B&W"])
+    private let addButton: UIButton = UIComponentFactory.createButton(title: "+", fontSize: 50)
+    private let saveButton: UIButton = UIComponentFactory.createButton(title: "Save", fontSize: 24)
 
-    
-    private let viewModel = MainViewModel()
+    private let viewModel = PhotoViewModel()
     private var cancellables: Set<AnyCancellable> = []
     
     // Gesture recognizers
@@ -118,6 +90,7 @@ class MainViewController: UIViewController {
         
         saveButton.addTarget(self, action: #selector(saveImageToGallery), for: .touchUpInside)
     }
+
 
     
     private func bindViewModel() {
@@ -202,12 +175,9 @@ class MainViewController: UIViewController {
     @objc private func filterChanged() {
         updateImageView()
     }
+    
     @objc private func saveImageToGallery() {
-        guard let imageToSave = imageView.image else {
-            
-            return
-        }
-        
+        guard let imageToSave = imageView.image else { return }
         UIImageWriteToSavedPhotosAlbum(imageToSave, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
 
